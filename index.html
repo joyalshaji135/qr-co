@@ -2,11 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>Bank QR · SBI & Federal</title>
-  <!-- Font Awesome for icons -->
+  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="data:application/json,{
+    &quot;name&quot;: &quot;Bank QR · SBI &amp; Federal&quot;,
+    &quot;short_name&quot;: &quot;BankQR&quot;,
+    &quot;description&quot;: &quot;Scan SBI &amp; Federal Bank QR codes&quot;,
+    &quot;start_url&quot;: &quot;.&quot;,
+    &quot;display&quot;: &quot;standalone&quot;,
+    &quot;background_color&quot;: &quot;#f2f4f8&quot;,
+    &quot;theme_color&quot;: &quot;#1a4c7a&quot;,
+    &quot;orientation&quot;: &quot;portrait&quot;,
+    &quot;icons&quot;: [
+      {
+        &quot;src&quot;: &quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231a4c7a'/%3E%3Ctext x='256' y='340' text-anchor='middle' font-size='280' fill='white' font-family='sans-serif'%3E%3C%2Ftext%3E%3Ccircle cx='256' cy='220' r='120' fill='white' opacity='0.95'/%3E%3Cpath d='M256 130 L330 260 L182 260 Z' fill='%231a4c7a'/%3E%3Cpath d='M256 310 L330 180 L182 180 Z' fill='%23f59e0b'/%3E%3C/svg%3E&quot;,
+        &quot;sizes&quot;: &quot;512x512&quot;,
+        &quot;type&quot;: &quot;image/svg+xml&quot;,
+        &quot;purpose&quot;: &quot;any maskable&quot;
+      },
+      {
+        &quot;src&quot;: &quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231a4c7a'/%3E%3Ctext x='256' y='340' text-anchor='middle' font-size='280' fill='white' font-family='sans-serif'%3E%3C%2Ftext%3E%3Ccircle cx='256' cy='220' r='120' fill='white' opacity='0.95'/%3E%3Cpath d='M256 130 L330 260 L182 260 Z' fill='%231a4c7a'/%3E%3Cpath d='M256 310 L330 180 L182 180 Z' fill='%23f59e0b'/%3E%3C/svg%3E&quot;,
+        &quot;sizes&quot;: &quot;512x512&quot;,
+        &quot;type&quot;: &quot;image/svg+xml&quot;,
+        &quot;purpose&quot;: &quot;any maskable&quot;
+      }
+    ]
+  }">
+  
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
   <style>
+    /* ----- RESET & FULL SCREEN ----- */
     * {
       margin: 0;
       padding: 0;
@@ -15,13 +44,17 @@
       transition: background-color 0.3s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    body {
+    html, body {
+      width: 100%;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      min-height: 100dvh;
       background: #f2f4f8;
-      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* ----- LIGHT MODE (default) ----- */
@@ -68,22 +101,25 @@
 
     .container {
       width: 100%;
-      max-width: 580px;
+      max-width: 680px;
       background: var(--bg-card);
       border-radius: 2.5rem;
-      padding: 2.2rem 2rem 2.8rem;
+      padding: 2rem 1.8rem 2.5rem;
       box-shadow: var(--shadow-card);
       border: 1px solid var(--border-light);
       backdrop-filter: blur(2px);
       transition: all 0.3s ease;
+      margin: 0 auto;
     }
 
-    /* header: title + dark mode toggle */
+    /* header */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 0.8rem;
     }
 
     .header h1 {
@@ -157,16 +193,12 @@
       pointer-events: none;
     }
 
-    .toggle-switch .fa-moon {
-      left: 6px;
-    }
-    .toggle-switch .fa-sun {
-      right: 6px;
-    }
+    .toggle-switch .fa-moon { left: 6px; }
+    .toggle-switch .fa-sun { right: 6px; }
     body.dark .toggle-switch .fa-moon { opacity: 0.2; }
     body.dark .toggle-switch .fa-sun { opacity: 1; color: #fbbf24; }
 
-    /* option selectors */
+    /* option buttons */
     .option-group {
       display: flex;
       gap: 1rem;
@@ -176,7 +208,7 @@
 
     .option-btn {
       flex: 1;
-      min-width: 110px;
+      min-width: 120px;
       padding: 0.9rem 0.6rem;
       border-radius: 2rem;
       border: 2px solid transparent;
@@ -192,6 +224,8 @@
       box-shadow: var(--shadow-btn);
       transition: all 0.2s ease;
       letter-spacing: 0.3px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     .option-btn i {
@@ -204,6 +238,10 @@
       background: var(--bg-option-hover);
       transform: translateY(-2px);
       box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.08);
+    }
+
+    .option-btn:active {
+      transform: scale(0.96);
     }
 
     .option-btn.active {
@@ -220,7 +258,6 @@
     .option-btn.federal-active.active {
       border-color: var(--bank-federal);
     }
-
     .option-btn.federal-active.active i {
       color: var(--bank-federal);
     }
@@ -246,17 +283,19 @@
       line-height: 0;
       transition: border 0.2s;
       width: fit-content;
+      max-width: 100%;
     }
 
     #qrImage {
-      width: 200px;
-      height: 200px;
+      width: 220px;
+      height: 220px;
       object-fit: contain;
       display: block;
       image-rendering: pixelated;
       background: white;
       border-radius: 12px;
       transition: all 0.2s;
+      max-width: 100%;
     }
 
     .bank-label {
@@ -272,7 +311,6 @@
     .bank-label i {
       font-size: 1.5rem;
     }
-
     .bank-label .sbi-text { color: var(--bank-sbi); }
     .bank-label .federal-text { color: var(--bank-federal); }
 
@@ -286,12 +324,48 @@
       border-radius: 30px;
     }
 
+    /* PWA install banner (optional) */
+    .install-banner {
+      margin-top: 1.2rem;
+      padding: 0.7rem 1.2rem;
+      background: var(--bg-option);
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-light);
+      cursor: default;
+    }
+    .install-banner i {
+      color: var(--bank-federal);
+      font-size: 1.1rem;
+    }
+
     /* responsive */
-    @media (max-width: 480px) {
-      .container { padding: 1.6rem 1.2rem; }
-      .header h1 { font-size: 1.4rem; }
+    @media (max-width: 600px) {
+      .container { padding: 1.6rem 1.2rem; border-radius: 2rem; }
+      .header h1 { font-size: 1.5rem; }
       .option-btn { font-size: 0.95rem; padding: 0.7rem 0.4rem; min-width: 90px; }
-      #qrImage { width: 160px; height: 160px; }
+      #qrImage { width: 180px; height: 180px; }
+    }
+
+    @media (max-width: 420px) {
+      .container { padding: 1rem 0.8rem; }
+      .header h1 { font-size: 1.2rem; }
+      .option-btn { font-size: 0.8rem; padding: 0.6rem 0.3rem; min-width: 70px; gap: 0.3rem; }
+      #qrImage { width: 140px; height: 140px; }
+      .qr-image-wrapper { padding: 0.8rem; }
+      .qr-display { padding: 1rem; }
+      .bank-label { font-size: 1.1rem; }
+      .install-banner { font-size: 0.75rem; padding: 0.5rem 0.8rem; }
+    }
+
+    @media (max-width: 360px) {
+      #qrImage { width: 110px; height: 110px; }
+      .option-btn { font-size: 0.7rem; padding: 0.4rem 0.2rem; min-width: 60px; }
     }
   </style>
 </head>
@@ -334,12 +408,17 @@
       <i class="fas fa-camera"></i> Scan to pay with any UPI app
     </div>
   </div>
+
+  <!-- install hint (PWA) -->
+  <div class="install-banner">
+    <i class="fas fa-mobile-screen-button"></i>
+    <span>Add to Home Screen for quick access</span>
+  </div>
 </div>
 
 <script>
   (function() {
     // DOM refs
-    const container = document.getElementById('appContainer');
     const themeToggle = document.getElementById('themeToggle');
     const qrImage = document.getElementById('qrImage');
     const bankName = document.getElementById('bankName');
@@ -364,71 +443,91 @@
       }
     };
 
-    let currentBank = 'sbi'; // sbi | federal
+    let currentBank = 'sbi';
 
-    // --- update UI with bank ---
     function setBank(bankKey) {
       const data = QR_DATA[bankKey];
       if (!data) return;
 
-      // update image
       qrImage.src = data.url;
-      // update label & icon
       bankName.textContent = data.label;
-      // remove previous icon classes and add new
       bankIcon.className = `fas ${data.icon}`;
-      // update label color class
-      bankName.className = ''; // reset
+      bankName.className = '';
       if (bankKey === 'sbi') {
         bankName.classList.add('sbi-text');
       } else {
         bankName.classList.add('federal-text');
       }
 
-      // update active state on buttons
       sbiBtn.classList.toggle('active', bankKey === 'sbi');
       federalBtn.classList.toggle('active', bankKey === 'federal');
-
-      // store current
       currentBank = bankKey;
     }
 
-    // --- Theme toggle ---
     function toggleTheme() {
       document.body.classList.toggle('dark');
     }
 
-    // --- event listeners ---
-    sbiBtn.addEventListener('click', function(e) {
+    // --- events ---
+    sbiBtn.addEventListener('click', (e) => {
       e.preventDefault();
       if (currentBank === 'sbi') return;
       setBank('sbi');
     });
 
-    federalBtn.addEventListener('click', function(e) {
+    federalBtn.addEventListener('click', (e) => {
       e.preventDefault();
       if (currentBank === 'federal') return;
       setBank('federal');
     });
 
-    themeToggle.addEventListener('click', function(e) {
+    themeToggle.addEventListener('click', (e) => {
       e.stopPropagation();
       toggleTheme();
     });
 
-    // keyboard support for toggle
-    themeToggle.addEventListener('keydown', function(e) {
+    themeToggle.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         toggleTheme();
       }
     });
 
-    // --- init: default SBI, light mode ---
+    // --- init ---
     setBank('sbi');
     document.body.classList.remove('dark');
 
-    console.log('✨ Bank QR ready — SBI & Federal Bank (custom images)');
+    // --- PWA: register service worker (inline) ---
+    if ('serviceWorker' in navigator) {
+      // Inline SW: we create a simple fetch handler to cache assets
+      // but since we're in a single HTML, we just register a dummy SW that works offline
+      // (We'll use a blob URL for the service worker)
+      const swCode = `
+        self.addEventListener('install', e => {
+          e.waitUntil(
+            caches.open('bankqr-v1').then(cache => {
+              return cache.addAll([
+                '/',
+                'index.html'
+              ]);
+            })
+          );
+        });
+        self.addEventListener('fetch', e => {
+          e.respondWith(
+            caches.match(e.request).then(r => r || fetch(e.request))
+          );
+        });
+      `;
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      
+      navigator.serviceWorker.register(swUrl, { scope: '/' })
+        .then(() => console.log('📲 Service Worker registered (PWA ready)'))
+        .catch(err => console.log('SW registration skipped:', err));
+    }
+
+    console.log('✨ Bank QR PWA — SBI & Federal Bank');
   })();
 </script>
 </body>
